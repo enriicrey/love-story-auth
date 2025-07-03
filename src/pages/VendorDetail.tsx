@@ -21,7 +21,7 @@ const VendorDetail = () => {
     service: "Fotografía",
     city: "Madrid",
     rating: 4.8,
-    reviews: 23,
+    reviewCount: 23,
     image: "📸",
     description: "Soy Elena, fotógrafa especializada en bodas con más de 8 años de experiencia. Mi estilo se caracteriza por capturar momentos únicos y emociones auténticas, creando recuerdos que durarán para siempre.",
     gallery: ["📸", "💍", "👰", "🤵", "💐", "🎉", "💒", "🥂"],
@@ -45,7 +45,7 @@ const VendorDetail = () => {
         features: ["10 horas de cobertura", "Fotos ilimitadas", "Galería online", "Álbum premium 40x30", "USB con todas las fotos", "Sesión preboda", "Segunda cámara"]
       }
     ],
-    reviews: [
+    customerReviews: [
       { name: "María García", rating: 5, comment: "Elena es increíble, captó cada momento especial de nuestra boda.", date: "Hace 2 semanas" },
       { name: "Carlos López", rating: 5, comment: "Profesional, creativa y muy atenta. Las fotos son espectaculares.", date: "Hace 1 mes" },
       { name: "Ana Martín", rating: 4, comment: "Muy contenta con el resultado. Recomiendo totalmente.", date: "Hace 2 meses" }
@@ -91,7 +91,7 @@ const VendorDetail = () => {
                             <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
                             <span className="font-semibold">{vendor.rating}</span>
                           </div>
-                          <span className="text-muted-foreground">({vendor.reviews} reseñas)</span>
+                          <span className="text-muted-foreground">({vendor.reviewCount} reseñas)</span>
                         </div>
                       </div>
                       <div className="flex gap-2 mt-4 md:mt-0">
@@ -167,7 +167,7 @@ const VendorDetail = () => {
                     <CardTitle>Reseñas</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    {vendor.reviews.map((review, index) => (
+                    {vendor.customerReviews.map((review, index) => (
                       <div key={index} className="pb-4 border-b last:border-b-0">
                         <div className="flex items-center justify-between mb-2">
                           <span className="font-medium">{review.name}</span>

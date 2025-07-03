@@ -11,6 +11,9 @@ import ClientDashboard from "./pages/ClientDashboard";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
+import ClientServices from "./pages/ClientServices";
+import Vendors from "./pages/Vendors";
+import VendorDetail from "./pages/VendorDetail";
 
 const queryClient = new QueryClient();
 

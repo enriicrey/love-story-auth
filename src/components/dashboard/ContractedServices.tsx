@@ -1,4 +1,5 @@
 
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,10 +15,15 @@ export const ContractedServices = () => {
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle className="text-xl flex items-center space-x-2">
-          <Heart className="h-5 w-5" />
-          <span>Servicios contratados</span>
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-xl flex items-center space-x-2">
+            <Heart className="h-5 w-5" />
+            <span>Servicios contratados</span>
+          </CardTitle>
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/client/services">Ver todos</Link>
+          </Button>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -41,7 +47,9 @@ export const ContractedServices = () => {
                 <div className="text-sm text-muted-foreground">
                   ⭐ {service.rating} valoración
                 </div>
-                <Button size="sm" variant="outline">Ver detalles</Button>
+                <Button size="sm" variant="outline" asChild>
+                  <Link to={`/vendors/${service.id}`}>Ver detalles</Link>
+                </Button>
               </div>
             </div>
           ))}

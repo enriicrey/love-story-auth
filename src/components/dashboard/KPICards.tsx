@@ -1,4 +1,5 @@
 
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Calendar, Euro, CheckCircle, Users } from "lucide-react";
@@ -33,18 +34,20 @@ export const KPICards = () => {
         </CardContent>
       </Card>
 
-      <Card className="shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
-        <CardHeader className="pb-3">
-          <div className="flex items-center space-x-2">
-            <CheckCircle className="h-5 w-5 text-primary" />
-            <CardTitle className="text-sm">Servicios</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-primary">6</div>
-          <div className="text-xs text-muted-foreground">contratados, 2 pendientes</div>
-        </CardContent>
-      </Card>
+      <Link to="/client/services">
+        <Card className="shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
+          <CardHeader className="pb-3">
+            <div className="flex items-center space-x-2">
+              <CheckCircle className="h-5 w-5 text-primary" />
+              <CardTitle className="text-sm">Servicios</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-primary">6</div>
+            <div className="text-xs text-muted-foreground">contratados, 2 pendientes</div>
+          </CardContent>
+        </Card>
+      </Link>
 
       <Card className="shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
         <CardHeader className="pb-3">

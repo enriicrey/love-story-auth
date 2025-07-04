@@ -22,8 +22,8 @@ const clientMenuItems = [
   { title: "Mis Servicios", url: "/client/services", icon: Briefcase },
   { title: "Calendario", url: "/client/calendar", icon: Calendar },
   { title: "Presupuesto", url: "/client/budget", icon: Euro },
-  { title: "Invitados", url: "/client/guests", icon: Users },
   { title: "Mensajes", url: "/client/messages", icon: MessageCircle },
+  { title: "Invitados", url: "/client/guests", icon: Users },
   { title: "Notificaciones", url: "/client/notifications", icon: Bell },
   { title: "Ajustes", url: "/client/settings", icon: Settings },
 ];

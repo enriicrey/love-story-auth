@@ -35,6 +35,7 @@ const providerMenuItems = [
   { title: "Finanzas", url: "/provider/finances", icon: Euro },
   { title: "Mensajes", url: "/provider/messages", icon: MessageCircle },
   { title: "Reseñas", url: "/provider/reviews", icon: Star },
+  { title: "Notificaciones", url: "/provider/notifications", icon: Bell },
   { title: "Configuración", url: "/provider/settings", icon: Settings },
 ];
 

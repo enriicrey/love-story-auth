@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,6 +20,13 @@ import ClientBudget from "./pages/ClientBudget";
 import ClientGuests from "./pages/ClientGuests";
 import ClientNotifications from "./pages/ClientNotifications";
 import ClientSettings from "./pages/ClientSettings";
+import ProviderClients from "./pages/ProviderClients";
+import ProviderCalendar from "./pages/ProviderCalendar";
+import ProviderFinances from "./pages/ProviderFinances";
+import ProviderMessages from "./pages/ProviderMessages";
+import ProviderReviews from "./pages/ProviderReviews";
+import ProviderNotifications from "./pages/ProviderNotifications";
+import ProviderSettings from "./pages/ProviderSettings";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +51,13 @@ const App = () => (
           <Route path="/vendors" element={<Vendors />} />
           <Route path="/vendors/:id" element={<VendorDetail />} />
           <Route path="/provider/dashboard" element={<ProviderDashboard />} />
+          <Route path="/provider/clients" element={<ProviderClients />} />
+          <Route path="/provider/calendar" element={<ProviderCalendar />} />
+          <Route path="/provider/finances" element={<ProviderFinances />} />
+          <Route path="/provider/messages" element={<ProviderMessages />} />
+          <Route path="/provider/reviews" element={<ProviderReviews />} />
+          <Route path="/provider/notifications" element={<ProviderNotifications />} />
+          <Route path="/provider/settings" element={<ProviderSettings />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

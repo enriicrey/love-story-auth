@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { SkeletonCard, SkeletonText } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
 import { 
   Users, 
   Heart, 

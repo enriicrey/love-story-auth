@@ -1,375 +1,221 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { SkeletonCard, SkeletonText } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
-import { 
-  Users, 
-  Heart, 
-  Calendar, 
-  Euro, 
-  TrendingUp, 
-  Settings,
-  Bell,
-  Search,
-  Plus,
-  BarChart3,
-  Activity,
-  UserCheck,
-  Building2
-} from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
+import { Heart, Users, Briefcase, TrendingUp, AlertCircle, CheckCircle, Clock, Euro } from "lucide-react";
 
 const AdminDashboard = () => {
-  const registrationData = [
-    { month: 'Jul', clients: 45, providers: 12 },
-    { month: 'Ago', clients: 52, providers: 15 },
-    { month: 'Sep', clients: 67, providers: 18 },
-    { month: 'Oct', clients: 71, providers: 22 },
-    { month: 'Nov', clients: 85, providers: 28 },
-    { month: 'Dic', clients: 92, providers: 32 }
-  ];
-
-  const revenueData = [
-    { month: 'Jul', revenue: 8500 },
-    { month: 'Ago', revenue: 9200 },
-    { month: 'Sep', revenue: 10800 },
-    { month: 'Oct', revenue: 11500 },
-    { month: 'Nov', revenue: 12100 },
-    { month: 'Dic', revenue: 12500 }
-  ];
-
-  const serviceDistribution = [
-    { name: 'Fotografía', value: 35, color: '#E91E63' },
-    { name: 'Catering', value: 25, color: '#3B82F6' },
-    { name: 'Decoración', value: 20, color: '#10B981' },
-    { name: 'Música', value: 15, color: '#F59E0B' },
-    { name: 'Otros', value: 5, color: '#8B5CF6' }
-  ];
-
-  const recentActivities = [
-    { id: 1, type: 'user', message: 'Nuevo cliente registrado: María González', time: '2 min', status: 'success' },
-    { id: 2, type: 'provider', message: 'Proveedor verificado: Foto Elena Studio', time: '15 min', status: 'info' },
-    { id: 3, type: 'booking', message: 'Nueva contratación: Catering Deluxe', time: '1 hora', status: 'success' },
-    { id: 4, type: 'system', message: 'Backup automatico completado', time: '2 horas', status: 'default' },
-    { id: 5, type: 'payment', message: 'Pago procesado: €1,200 comisión', time: '3 horas', status: 'success' }
-  ];
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-background">
-      {/* Enhanced Header */}
-      <header className="glass-effect border-b sticky top-0 z-50">
-        <div className="flex items-center justify-between px-6 py-4">
-          <div className="space-y-1">
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink to="/admin" className="flex items-center gap-2">
-                    <Settings className="h-4 w-4" />
-                    Admin
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Dashboard</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-            <h1 className="text-3xl font-bold text-foreground animate-fade-in-up">Panel de Administración</h1>
-            <p className="text-muted-foreground">Gestiona la plataforma WeddingPlan</p>
-          </div>
-          
-          <div className="flex items-center space-x-4 animate-slide-in-right">
-            <Button variant="outline" size="icon" className="relative">
-              <Bell className="h-5 w-5" />
-              <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 text-xs p-0 flex items-center justify-center">
-                3
-              </Badge>
-            </Button>
-            <Button variant="outline" size="icon">
-              <Search className="h-5 w-5" />
-            </Button>
-            <Button className="btn-primary">
-              <Plus className="h-4 w-4 mr-2" />
-              Nueva Acción
-            </Button>
+    <div className="min-h-screen gradient-bg">
+      <header className="bg-white/80 backdrop-blur-sm border-b border-border sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <Link to="/" className="flex items-center space-x-2 text-2xl font-bold text-primary">
+              <Heart className="h-8 w-8 fill-current" />
+              <span>WeddingPlan</span>
+            </Link>
+            
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-muted-foreground">Panel de Administrador</span>
+              <Button variant="ghost" asChild>
+                <Link to="/">Cerrar Sesión</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </header>
 
-      <main className="p-6 space-y-8">
-        {/* Enhanced KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card hoverable interactive className="animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-foreground mb-4">
+            Panel de Administración
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            Gestiona la plataforma, usuarios y proveedores
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <Card className="shadow-lg hover:shadow-xl transition-shadow">
             <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Total Usuarios
-                </CardTitle>
+              <div className="flex items-center space-x-2">
                 <Users className="h-5 w-5 text-primary" />
+                <CardTitle className="text-sm">Parejas registradas</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-primary">2,450</div>
-              <div className="flex items-center space-x-2 text-sm">
-                <Badge variant="success" className="text-xs">
-                  +12.5%
-                </Badge>
-                <span className="text-muted-foreground">vs mes anterior</span>
-              </div>
+              <div className="text-2xl font-bold text-primary">1,247</div>
+              <div className="text-xs text-green-600">+23 esta semana</div>
             </CardContent>
           </Card>
 
-          <Card hoverable interactive className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+          <Card className="shadow-lg hover:shadow-xl transition-shadow">
             <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Proveedores Activos
-                </CardTitle>
-                <Building2 className="h-5 w-5 text-info" />
+              <div className="flex items-center space-x-2">
+                <Briefcase className="h-5 w-5 text-primary" />
+                <CardTitle className="text-sm">Proveedores activos</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-info">185</div>
-              <div className="flex items-center space-x-2 text-sm">
-                <Badge variant="info" className="text-xs">
-                  +8.2%
-                </Badge>
-                <span className="text-muted-foreground">crecimiento mensual</span>
-              </div>
+              <div className="text-2xl font-bold text-primary">542</div>
+              <div className="text-xs text-green-600">+8 esta semana</div>
             </CardContent>
           </Card>
 
-          <Card hoverable interactive className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+          <Card className="shadow-lg hover:shadow-xl transition-shadow">
             <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Bodas este Mes
-                </CardTitle>
-                <Heart className="h-5 w-5 text-primary fill-current" />
+              <div className="flex items-center space-x-2">
+                <TrendingUp className="h-5 w-5 text-primary" />
+                <CardTitle className="text-sm">Conexiones exitosas</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-primary">45</div>
-              <div className="flex items-center space-x-2 text-sm">
-                <Badge className="text-xs bg-warning/10 text-warning-foreground">
-                  +3 esta semana
-                </Badge>
-                <span className="text-muted-foreground">eventos planificados</span>
-              </div>
+              <div className="text-2xl font-bold text-primary">89%</div>
+              <div className="text-xs text-green-600">+2% este mes</div>
             </CardContent>
           </Card>
 
-          <Card hoverable interactive className="animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+          <Card className="shadow-lg hover:shadow-xl transition-shadow">
             <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Ingresos Comisiones
-                </CardTitle>
-                <Euro className="h-5 w-5 text-success" />
+              <div className="flex items-center space-x-2">
+                <Euro className="h-5 w-5 text-primary" />
+                <CardTitle className="text-sm">Ingresos totales</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-success">€12,500</div>
-              <div className="flex items-center space-x-2 text-sm">
-                <Badge variant="success" className="text-xs">
-                  +15.3%
-                </Badge>
-                <span className="text-muted-foreground">objetivo: €15,000</span>
-              </div>
+              <div className="text-2xl font-bold text-primary">€45,230</div>
+              <div className="text-xs text-green-600">+18% este mes</div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Registration Chart */}
-          <Card className="animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <Card className="shadow-lg">
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center space-x-2">
-                  <BarChart3 className="h-5 w-5" />
-                  <span>Registros Mensuales</span>
-                </CardTitle>
-                <Badge variant="outline">Últimos 6 meses</Badge>
-              </div>
+              <CardTitle className="text-xl">Solicitudes de proveedores pendientes</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={registrationData}>
-                    <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'hsl(var(--card))', 
-                        border: '1px solid hsl(var(--border))',
-                        borderRadius: '8px'
-                      }} 
-                    />
-                    <Legend />
-                    <Bar dataKey="clients" fill="hsl(var(--primary))" name="Clientes" radius={[4, 4, 0, 0]} />
-                    <Bar dataKey="providers" fill="hsl(var(--info))" name="Proveedores" radius={[4, 4, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Revenue Chart */}
-          <Card className="animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center space-x-2">
-                  <TrendingUp className="h-5 w-5" />
-                  <span>Evolución Ingresos</span>
-                </CardTitle>
-                <Badge variant="success">+18% total</Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={revenueData}>
-                    <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'hsl(var(--card))', 
-                        border: '1px solid hsl(var(--border))',
-                        borderRadius: '8px'
-                      }} 
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="revenue" 
-                      stroke="hsl(var(--success))" 
-                      strokeWidth={3}
-                      dot={{ fill: 'hsl(var(--success))', strokeWidth: 2, r: 6 }}
-                      activeDot={{ r: 8, stroke: 'hsl(var(--success))', strokeWidth: 2 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Service Distribution */}
-          <Card className="animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Activity className="h-5 w-5" />
-                <span>Servicios Populares</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={serviceDistribution}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={40}
-                      outerRadius={80}
-                      paddingAngle={5}
-                      dataKey="value"
-                    >
-                      {serviceDistribution.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="space-y-2 mt-4">
-                {serviceDistribution.map((service, index) => (
-                  <div key={index} className="flex items-center justify-between text-sm">
-                    <div className="flex items-center space-x-2">
-                      <div 
-                        className="w-3 h-3 rounded-full" 
-                        style={{ backgroundColor: service.color }}
-                      />
-                      <span>{service.name}</span>
-                    </div>
-                    <span className="font-medium">{service.value}%</span>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center p-3 bg-secondary rounded-lg">
+                  <div>
+                    <div className="font-medium">Fotografía Elegante SL</div>
+                    <div className="text-sm text-muted-foreground">Fotografía • Madrid</div>
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Recent Activity */}
-          <Card className="lg:col-span-2 animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center space-x-2">
-                  <Activity className="h-5 w-5" />
-                  <span>Actividad Reciente</span>
-                </CardTitle>
-                <Button variant="outline" size="sm">
-                  Ver Todo
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4 custom-scrollbar max-h-80 overflow-y-auto">
-                {recentActivities.map((activity) => (
-                  <div key={activity.id} className="flex items-start space-x-4 p-3 rounded-lg hover:bg-secondary/50 transition-colors">
-                    <div className={cn(
-                      "w-2 h-2 rounded-full mt-2 flex-shrink-0",
-                      activity.status === 'success' && "bg-success",
-                      activity.status === 'info' && "bg-info", 
-                      activity.status === 'default' && "bg-muted-foreground"
-                    )} />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground">{activity.message}</p>
-                      <p className="text-xs text-muted-foreground">{activity.time}</p>
-                    </div>
-                    <Button variant="ghost" size="xs">
-                      Ver
+                  <div className="flex space-x-2">
+                    <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                      <CheckCircle className="h-4 w-4" />
+                    </Button>
+                    <Button size="sm" variant="destructive">
+                      <AlertCircle className="h-4 w-4" />
                     </Button>
                   </div>
-                ))}
+                </div>
+                
+                <div className="flex justify-between items-center p-3 bg-secondary rounded-lg">
+                  <div>
+                    <div className="font-medium">Catering Delicias</div>
+                    <div className="text-sm text-muted-foreground">Catering • Barcelona</div>
+                  </div>
+                  <div className="flex space-x-2">
+                    <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                      <CheckCircle className="h-4 w-4" />
+                    </Button>
+                    <Button size="sm" variant="destructive">
+                      <AlertCircle className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="flex justify-between items-center p-3 bg-secondary rounded-lg">
+                  <div>
+                    <div className="font-medium">Flores & Jardines</div>
+                    <div className="text-sm text-muted-foreground">Decoración • Valencia</div>
+                  </div>
+                  <div className="flex space-x-2">
+                    <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                      <CheckCircle className="h-4 w-4" />
+                    </Button>
+                    <Button size="sm" variant="destructive">
+                      <AlertCircle className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-xl">Actividad reciente</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3 p-3 bg-secondary rounded-lg">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <div>
+                    <div className="font-medium">Nuevo proveedor aprobado</div>
+                    <div className="text-sm text-muted-foreground">Música & Eventos - hace 2 horas</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-3 p-3 bg-secondary rounded-lg">
+                  <Users className="h-5 w-5 text-blue-600" />
+                  <div>
+                    <div className="font-medium">Nueva pareja registrada</div>
+                    <div className="text-sm text-muted-foreground">Ana & Miguel - hace 4 horas</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-3 p-3 bg-secondary rounded-lg">
+                  <Clock className="h-5 w-5 text-yellow-600" />
+                  <div>
+                    <div className="font-medium">Solicitud pendiente de revisión</div>
+                    <div className="text-sm text-muted-foreground">Catering Premium - hace 1 día</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-3 p-3 bg-secondary rounded-lg">
+                  <TrendingUp className="h-5 w-5 text-green-600" />
+                  <div>
+                    <div className="font-medium">Conexión exitosa</div>
+                    <div className="text-sm text-muted-foreground">Laura & Pedro con Foto Arte - hace 1 día</div>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Quick Actions */}
-        <Card className="animate-fade-in-up" style={{ animationDelay: '0.9s' }}>
+        <Card className="shadow-lg">
           <CardHeader>
-            <CardTitle>Acciones Rápidas</CardTitle>
+            <CardTitle className="text-xl">Herramientas de administración</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Button variant="outline" className="h-20 flex-col gap-2">
-                <UserCheck className="h-6 w-6" />
-                <span>Verificar Proveedores</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+              <Button className="justify-start" variant="outline">
+                <Users className="mr-2 h-4 w-4" />
+                Gestionar usuarios
               </Button>
-              <Button variant="outline" className="h-20 flex-col gap-2">
-                <BarChart3 className="h-6 w-6" />
-                <span>Ver Analytics</span>
+              
+              <Button className="justify-start" variant="outline">
+                <Briefcase className="mr-2 h-4 w-4" />
+                Gestionar proveedores
               </Button>
-              <Button variant="outline" className="h-20 flex-col gap-2">
-                <Settings className="h-6 w-6" />
-                <span>Configuración</span>
+              
+              <Button className="justify-start" variant="outline">
+                <TrendingUp className="mr-2 h-4 w-4" />
+                Ver estadísticas
               </Button>
-              <Button variant="outline" className="h-20 flex-col gap-2">
-                <Users className="h-6 w-6" />
-                <span>Gestionar Usuarios</span>
+              
+              <Button className="justify-start" variant="outline">
+                <AlertCircle className="mr-2 h-4 w-4" />
+                Reportes y alertas
               </Button>
             </div>
           </CardContent>
         </Card>
-      </main>
+      </div>
     </div>
   );
 };

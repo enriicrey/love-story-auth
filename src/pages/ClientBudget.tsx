@@ -11,6 +11,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Euro, TrendingUp, Download, Plus, Edit } from "lucide-react";
 
 const budgetData = {
@@ -47,9 +49,15 @@ const statusLabels = {
   completado: "Completado"
 };
 
+const chartData = [
+  { name: "Gastado", value: budgetData.spent, fill: "#ef4444" },
+  { name: "Restante", value: budgetData.remaining, fill: "#10b981" }
+];
+
 const ClientBudget = () => {
   const [selectedFilter, setSelectedFilter] = useState("todos");
   const [showNewCategoryModal, setShowNewCategoryModal] = useState(false);
+  const [editingItem, setEditingItem] = useState(null);
 
   const spentPercentage = (budgetData.spent / budgetData.total) * 100;
 
@@ -64,6 +72,7 @@ const ClientBudget = () => {
   });
 
   const handleDownloadPDF = () => {
+    // Simulate PDF download
     console.log("Downloading budget PDF...");
     alert("Descargando presupuesto en PDF...");
   };
@@ -133,124 +142,157 @@ const ClientBudget = () => {
               </Card>
             </div>
 
-            {/* Expenses List */}
-            <Card className="shadow-lg">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">Desglose de Gastos</CardTitle>
-                  <div className="flex space-x-2">
-                    <Select value={selectedFilter} onValueChange={setSelectedFilter}>
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="todos">Todos</SelectItem>
-                        <SelectItem value="confirmado">Confirmados</SelectItem>
-                        <SelectItem value="pendiente">Pendientes</SelectItem>
-                        <SelectItem value="estimado">Estimados</SelectItem>
-                        <SelectItem value="completado">Completados</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <Dialog open={showNewCategoryModal} onOpenChange={setShowNewCategoryModal}>
-                      <DialogTrigger asChild>
-                        <Button>
-                          <Plus className="h-4 w-4 mr-2" />
-                          Añadir
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Añadir Nueva Categoría</DialogTitle>
-                        </DialogHeader>
-                        <div className="space-y-4">
-                          <div>
-                            <Label htmlFor="categoryName">Nombre</Label>
-                            <Input id="categoryName" placeholder="Nombre de la categoría" />
-                          </div>
-                          <div>
-                            <Label htmlFor="categoryAmount">Monto</Label>
-                            <Input id="categoryAmount" type="number" placeholder="0" />
-                          </div>
-                          <div>
-                            <Label htmlFor="categoryStatus">Estado</Label>
-                            <Select>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Seleccionar estado" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="estimado">Estimado</SelectItem>
-                                <SelectItem value="pendiente">Pendiente</SelectItem>
-                                <SelectItem value="confirmado">Confirmado</SelectItem>
-                                <SelectItem value="completado">Completado</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                          <div className="flex space-x-2">
-                            <Button className="flex-1" onClick={() => setShowNewCategoryModal(false)}>
-                              Añadir Categoría
-                            </Button>
-                            <Button variant="outline" onClick={() => setShowNewCategoryModal(false)}>
-                              Cancelar
-                            </Button>
-                          </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {/* Contracted Services */}
-                  <div>
-                    <h4 className="font-semibold text-sm text-muted-foreground mb-3">SERVICIOS CONTRATADOS</h4>
-                    {contractedServices
-                      .filter(service => selectedFilter === "todos" || service.status === selectedFilter)
-                      .map((service) => (
-                        <div key={service.id} className="flex items-center justify-between p-3 bg-secondary rounded-lg mb-2">
-                          <div>
-                            <p className="font-medium">{service.name}</p>
-                            <p className="text-sm text-muted-foreground">{service.category}</p>
-                          </div>
-                          <div className="flex items-center space-x-3">
-                            <Badge className={statusColors[service.status]}>
-                              {statusLabels[service.status]}
-                            </Badge>
-                            <p className="font-semibold">€{service.amount.toLocaleString()}</p>
-                            <Button variant="ghost" size="sm">
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Chart */}
+              <div className="lg:col-span-1">
+                <Card className="shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="text-lg">Distribución</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ChartContainer config={{ spent: { label: "Gastado" }, remaining: { label: "Restante" } }}>
+                      <ResponsiveContainer width="100%" height={250}>
+                        <PieChart>
+                          <Pie
+                            data={chartData}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={60}
+                            outerRadius={100}
+                            paddingAngle={5}
+                            dataKey="value"
+                          >
+                            {chartData.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.fill} />
+                            ))}
+                          </Pie>
+                          <ChartTooltip content={<ChartTooltipContent />} />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </ChartContainer>
+                  </CardContent>
+                </Card>
+              </div>
 
-                  {/* Personal Categories */}
-                  <div>
-                    <h4 className="font-semibold text-sm text-muted-foreground mb-3">CATEGORÍAS PERSONALES</h4>
-                    {personalCategories
-                      .filter(category => selectedFilter === "todos" || category.status === selectedFilter)
-                      .map((category) => (
-                        <div key={category.id} className="flex items-center justify-between p-3 bg-secondary rounded-lg mb-2">
-                          <div>
-                            <p className="font-medium">{category.name}</p>
-                            <p className="text-sm text-muted-foreground">Categoría personal</p>
-                          </div>
-                          <div className="flex items-center space-x-3">
-                            <Badge className={statusColors[category.status]}>
-                              {statusLabels[category.status]}
-                            </Badge>
-                            <p className="font-semibold">€{category.amount.toLocaleString()}</p>
-                            <Button variant="ghost" size="sm">
-                              <Edit className="h-4 w-4" />
+              {/* Expenses List */}
+              <div className="lg:col-span-2">
+                <Card className="shadow-lg">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-lg">Desglose de Gastos</CardTitle>
+                      <div className="flex space-x-2">
+                        <Select value={selectedFilter} onValueChange={setSelectedFilter}>
+                          <SelectTrigger className="w-[180px]">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="todos">Todos</SelectItem>
+                            <SelectItem value="confirmado">Confirmados</SelectItem>
+                            <SelectItem value="pendiente">Pendientes</SelectItem>
+                            <SelectItem value="estimado">Estimados</SelectItem>
+                            <SelectItem value="completado">Completados</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <Dialog open={showNewCategoryModal} onOpenChange={setShowNewCategoryModal}>
+                          <DialogTrigger asChild>
+                            <Button>
+                              <Plus className="h-4 w-4 mr-2" />
+                              Añadir
                             </Button>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Añadir Nueva Categoría</DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4">
+                              <div>
+                                <Label htmlFor="categoryName">Nombre</Label>
+                                <Input id="categoryName" placeholder="Nombre de la categoría" />
+                              </div>
+                              <div>
+                                <Label htmlFor="categoryAmount">Monto</Label>
+                                <Input id="categoryAmount" type="number" placeholder="0" />
+                              </div>
+                              <div>
+                                <Label htmlFor="categoryStatus">Estado</Label>
+                                <Select>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Seleccionar estado" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="estimado">Estimado</SelectItem>
+                                    <SelectItem value="pendiente">Pendiente</SelectItem>
+                                    <SelectItem value="confirmado">Confirmado</SelectItem>
+                                    <SelectItem value="completado">Completado</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              <div className="flex space-x-2">
+                                <Button className="flex-1">Añadir Categoría</Button>
+                                <Button variant="outline" onClick={() => setShowNewCategoryModal(false)}>
+                                  Cancelar
+                                </Button>
+                              </div>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {/* Contracted Services */}
+                      <div>
+                        <h4 className="font-semibold text-sm text-muted-foreground mb-3">SERVICIOS CONTRATADOS</h4>
+                        {contractedServices
+                          .filter(service => selectedFilter === "todos" || service.status === selectedFilter)
+                          .map((service) => (
+                            <div key={service.id} className="flex items-center justify-between p-3 bg-secondary rounded-lg mb-2">
+                              <div>
+                                <p className="font-medium">{service.name}</p>
+                                <p className="text-sm text-muted-foreground">{service.category}</p>
+                              </div>
+                              <div className="flex items-center space-x-3">
+                                <Badge className={statusColors[service.status]}>
+                                  {statusLabels[service.status]}
+                                </Badge>
+                                <p className="font-semibold">€{service.amount.toLocaleString()}</p>
+                                <Button variant="ghost" size="sm">
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+
+                      {/* Personal Categories */}
+                      <div>
+                        <h4 className="font-semibold text-sm text-muted-foreground mb-3">CATEGORÍAS PERSONALES</h4>
+                        {personalCategories
+                          .filter(category => selectedFilter === "todos" || category.status === selectedFilter)
+                          .map((category) => (
+                            <div key={category.id} className="flex items-center justify-between p-3 bg-secondary rounded-lg mb-2">
+                              <div>
+                                <p className="font-medium">{category.name}</p>
+                                <p className="text-sm text-muted-foreground">Categoría personal</p>
+                              </div>
+                              <div className="flex items-center space-x-3">
+                                <Badge className={statusColors[category.status]}>
+                                  {statusLabels[category.status]}
+                                </Badge>
+                                <p className="font-semibold">€{category.amount.toLocaleString()}</p>
+                                <Button variant="ghost" size="sm">
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
           </div>
         </main>
       </div>

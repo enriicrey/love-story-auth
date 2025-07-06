@@ -1,241 +1,107 @@
-
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/AppSidebar";
+import { DashboardLayout } from "@/shared/layout/DashboardLayout";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
+import { Button } from "@/shared/ui/button";
+import { Badge } from "@/shared/ui/badge";
 import { KPICard } from "@/shared/components/kpi-card";
-import { Heart, Calendar, Euro, Users, TrendingUp, Star, MessageCircle, Bell, LogOut, BarChart3 } from "lucide-react";
+import { Users, Euro, Calendar, Star, CheckCircle, Clock, MessageSquare, TrendingUp } from "lucide-react";
 
 const ProviderDashboard = () => {
-  const recentClients = [
-    { id: 1, names: "Ana & Carlos", wedding_date: "15 Jun 2024", status: "confirmado", service: "Fotografía", avatar: "👰" },
-    { id: 2, names: "María & David", wedding_date: "22 Jun 2024", status: "pendiente", service: "Fotografía", avatar: "💑" },
-    { id: 3, names: "Laura & Miguel", wedding_date: "5 Jul 2024", status: "confirmado", service: "Fotografía", avatar: "👫" },
-    { id: 4, names: "Carmen & Javier", wedding_date: "12 Jul 2024", status: "propuesta", service: "Fotografía", avatar: "💕" },
-    { id: 5, names: "Sofia & Antonio", wedding_date: "20 Jul 2024", status: "confirmado", service: "Fotografía", avatar: "👩‍❤️‍👨" }
-  ];
-
-  const upcomingAppointments = [
-    { id: 1, client: "Ana & Carlos", type: "Sesión pre-boda", date: "Mañana", time: "16:00" },
-    { id: 2, client: "María & David", type: "Reunión inicial", date: "15 Dic", time: "11:00" },
-    { id: 3, client: "Laura & Miguel", type: "Entrega fotos", date: "18 Dic", time: "17:30" }
-  ];
-
-  const monthlyRevenue = [
-    { month: "Jul", amount: 6200 },
-    { month: "Ago", amount: 7100 },
-    { month: "Sep", amount: 8500 },
-    { month: "Oct", amount: 9200 },
-    { month: "Nov", amount: 8800 },
-    { month: "Dic", amount: 8500 }
-  ];
-
-  const pendingTasks = [
-    { id: 1, task: "Enviar propuesta a Carmen & Javier", priority: "alta" },
-    { id: 2, task: "Confirmar ubicación sesión Ana & Carlos", priority: "media" },
-    { id: 3, task: "Actualizar portfolio online", priority: "baja" },
-    { id: 4, task: "Responder consulta María & David", priority: "alta" },
-    { id: 5, task: "Preparar contrato Laura & Miguel", priority: "media" }
-  ];
-
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-gradient-to-br from-background to-secondary/30">
-        <AppSidebar userType="provider" />
-        
-        <main className="flex-1">
-          <header className="bg-white/80 backdrop-blur-sm border-b border-border sticky top-0 z-50">
-            <div className="flex items-center justify-between px-6 py-4">
-              <div className="flex items-center space-x-4">
-                <SidebarTrigger />
-                <div>
-                  <h1 className="text-2xl font-bold text-foreground">Panel de Proveedor</h1>
-                  <p className="text-sm text-muted-foreground">Gestiona tu negocio de fotografía</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center space-x-4">
-                <Button variant="ghost" size="icon">
-                  <Bell className="h-5 w-5" />
-                </Button>
-                <Button variant="ghost" asChild>
-                  <Link to="/">
-                    <LogOut className="h-4 w-4 mr-2" />
-                    Cerrar Sesión
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </header>
-
-          <div className="p-6">
-            {/* KPI Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <KPICard
-                title="Ingresos mes"
-                value="€8,500"
-                subtitle="+15% vs mes anterior"
-                color="primary"
-                icon={Euro}
-              />
-
-              <KPICard
-                title="Clientes activos"
-                value={12}
-                subtitle="bodas programadas"
-                color="blue"
-                icon={Users}
-              />
-
-              <KPICard
-                title="Valoración"
-                value="4.8"
-                subtitle="⭐ (47 reseñas)"
-                color="orange"
-                icon={Star}
-              />
-
-              <KPICard
-                title="Próximas citas"
-                value={3}
-                subtitle="reuniones esta semana"
-                color="green"
-                icon={Calendar}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-              {/* Clientes recientes */}
-              <Card className="shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-xl flex items-center space-x-2">
-                    <Users className="h-5 w-5" />
-                    <span>Clientes recientes</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {recentClients.map((client) => (
-                      <div key={client.id} className="flex items-center justify-between p-3 bg-secondary rounded-lg hover:bg-secondary/80 transition-colors">
-                        <div className="flex items-center space-x-3">
-                          <span className="text-2xl">{client.avatar}</span>
-                          <div>
-                            <div className="font-medium">{client.names}</div>
-                            <div className="text-sm text-muted-foreground">{client.service} • {client.wedding_date}</div>
-                          </div>
-                        </div>
-                        <Badge 
-                          className={
-                            client.status === "confirmado" ? "bg-green-100 text-green-800" : 
-                            client.status === "pendiente" ? "bg-yellow-100 text-yellow-800" : 
-                            "bg-blue-100 text-blue-800"
-                          }
-                        >
-                          {client.status === "confirmado" ? "Confirmado" : 
-                           client.status === "pendiente" ? "Pendiente" : "Propuesta"}
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Citas próximas */}
-              <Card className="shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-xl flex items-center space-x-2">
-                    <Calendar className="h-5 w-5" />
-                    <span>Citas próximas</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {upcomingAppointments.map((appointment) => (
-                      <div key={appointment.id} className="p-4 bg-secondary rounded-lg">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <div className="font-medium">{appointment.client}</div>
-                            <div className="text-sm text-muted-foreground">{appointment.type}</div>
-                          </div>
-                          <div className="text-right">
-                            <div className="font-medium">{appointment.date}</div>
-                            <div className="text-sm text-muted-foreground">{appointment.time}</div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <Button className="w-full mt-4" variant="outline">
-                    <Calendar className="mr-2 h-4 w-4" />
-                    Ver calendario completo
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Gráfico de ingresos */}
-              <Card className="shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-xl flex items-center space-x-2">
-                    <BarChart3 className="h-5 w-5" />
-                    <span>Ingresos últimos 6 meses</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {monthlyRevenue.map((data, index) => (
-                      <div key={index} className="flex items-center justify-between">
-                        <span className="text-sm font-medium">{data.month}</span>
-                        <div className="flex items-center space-x-3">
-                          <div className="w-24 bg-secondary rounded-full h-2">
-                            <div 
-                              className="bg-primary h-2 rounded-full" 
-                              style={{ width: `${(data.amount / 10000) * 100}%` }}
-                            ></div>
-                          </div>
-                          <span className="text-sm font-medium w-16 text-right">€{data.amount.toLocaleString()}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Tareas pendientes */}
-              <Card className="shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-xl flex items-center space-x-2">
-                    <TrendingUp className="h-5 w-5" />
-                    <span>Tareas pendientes</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {pendingTasks.map((task) => (
-                      <div key={task.id} className="flex items-center justify-between p-3 bg-secondary rounded-lg">
-                        <span className="text-sm">{task.task}</span>
-                        <Badge 
-                          variant={task.priority === "alta" ? "destructive" : task.priority === "media" ? "default" : "secondary"}
-                          className="text-xs"
-                        >
-                          {task.priority === "alta" ? "Alta" : task.priority === "media" ? "Media" : "Baja"}
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-                  <Button className="w-full mt-4" variant="outline">
-                    Ver todas las tareas
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </main>
+    <DashboardLayout userType="provider" title="Panel de Proveedor">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <KPICard
+          title="Clientes"
+          value="45"
+          subtitle="Clientes activos"
+          color="primary"
+          icon={Users}
+        />
+        <KPICard
+          title="Ingresos Mensuales"
+          value="€3,500"
+          subtitle="Este mes"
+          color="green"
+          icon={Euro}
+        />
+        <KPICard
+          title="Próximos Eventos"
+          value="7"
+          subtitle="Eventos este mes"
+          color="blue"
+          icon={Calendar}
+        />
+        <KPICard
+          title="Valoración Media"
+          value="4.8"
+          subtitle="de 5 estrellas"
+          color="orange"
+          icon={Star}
+        />
       </div>
-    </SidebarProvider>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <Card className="hover-lift">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <CheckCircle className="h-5 w-5" />
+              Tareas Pendientes
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {[
+                { task: "Confirmar detalles del menú con cliente", time: "Hoy, 15:00" },
+                { task: "Enviar propuesta de decoración floral", time: "Mañana, 10:00" },
+                { task: "Preparar lista de canciones para el evento", time: "Viernes, 14:00" }
+              ].map((item, index) => (
+                <div key={index} className="flex justify-between items-center p-4 bg-secondary/50 rounded-xl hover:bg-secondary/70 transition-colors">
+                  <div>
+                    <div className="font-medium">{item.task}</div>
+                    <div className="text-sm text-muted-foreground">{item.time}</div>
+                  </div>
+                  <Badge variant="outline">Pendiente</Badge>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="hover-lift">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Clock className="h-5 w-5" />
+              Actividad Reciente
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {[
+                { activity: "Nuevo mensaje de cliente", detail: "Laura G.", time: "hace 1 hora", icon: MessageSquare },
+                { activity: "Pago recibido", detail: "Evento del 15 de Junio", time: "hace 3 horas", icon: TrendingUp },
+                { activity: "Evento confirmado", detail: "Boda de Ana y Juan", time: "Ayer", icon: Calendar }
+              ].map((item, index) => (
+                <div key={index} className="flex items-center space-x-3 p-4 bg-secondary/50 rounded-xl hover:bg-secondary/70 transition-colors">
+                  <item.icon className="h-5 w-5 text-blue-500" />
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium">{item.activity}</div>
+                    <div className="text-sm text-muted-foreground">{item.detail} - {item.time}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="text-center mt-8">
+        <Button asChild>
+          <Link to="/provider/settings">
+            Gestionar Perfil
+          </Link>
+        </Button>
+      </div>
+    </DashboardLayout>
   );
 };
 

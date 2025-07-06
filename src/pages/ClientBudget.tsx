@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -6,11 +5,11 @@ import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { KPICard } from "@/components/ui/kpi-card";
 import { Euro, TrendingUp, Download, Plus, Edit } from "lucide-react";
 
 const budgetData = {
@@ -90,47 +89,32 @@ const ClientBudget = () => {
               </div>
             </div>
 
-            {/* Summary Cards */}
+            {/* Summary Cards - Updated to use KPICard */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <Card className="shadow-lg">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center space-x-2">
-                    <Euro className="h-5 w-5 text-primary" />
-                    <CardTitle className="text-sm">Presupuesto Total</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-primary">€{budgetData.total.toLocaleString()}</div>
-                  <div className="text-xs text-muted-foreground">presupuesto inicial</div>
-                </CardContent>
-              </Card>
+              <KPICard
+                title="Presupuesto Total"
+                value={`€${budgetData.total.toLocaleString()}`}
+                subtitle="presupuesto inicial"
+                color="primary"
+                icon={Euro}
+              />
 
-              <Card className="shadow-lg">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center space-x-2">
-                    <TrendingUp className="h-5 w-5 text-red-500" />
-                    <CardTitle className="text-sm">Gastado</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-red-600">€{budgetData.spent.toLocaleString()}</div>
-                  <div className="text-xs text-muted-foreground mb-2">{spentPercentage.toFixed(1)}% del total</div>
-                  <Progress value={spentPercentage} className="h-2" />
-                </CardContent>
-              </Card>
+              <KPICard
+                title="Gastado"
+                value={`€${budgetData.spent.toLocaleString()}`}
+                subtitle={`${spentPercentage.toFixed(1)}% del total`}
+                color="red"
+                icon={TrendingUp}
+                progress={spentPercentage}
+              />
 
-              <Card className="shadow-lg">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center space-x-2">
-                    <Euro className="h-5 w-5 text-green-500" />
-                    <CardTitle className="text-sm">Disponible</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-green-600">€{budgetData.remaining.toLocaleString()}</div>
-                  <div className="text-xs text-muted-foreground">restante</div>
-                </CardContent>
-              </Card>
+              <KPICard
+                title="Disponible"
+                value={`€${budgetData.remaining.toLocaleString()}`}
+                subtitle="restante"
+                color="green"
+                icon={Euro}
+              />
             </div>
 
             {/* Expenses List */}

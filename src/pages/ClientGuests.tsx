@@ -6,8 +6,8 @@ import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Plus, Search, Mail, Phone, Edit, Trash2, Users } from "lucide-react";
+import { Plus, Search, Users } from "lucide-react";
+import { GuestTable, Guest } from "@/components/ui/guest-table";
 import {
   Dialog,
   DialogContent,
@@ -23,7 +23,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 
 const guestStats = [
   { title: "Total Invitados", count: 120, color: "bg-blue-500", textColor: "text-blue-600" },
@@ -32,7 +31,7 @@ const guestStats = [
   { title: "Rechazados", count: 10, color: "bg-red-500", textColor: "text-red-600" },
 ];
 
-const mockGuests = [
+const mockGuests: Guest[] = [
   { id: 1, name: "María García", email: "maria@email.com", phone: "+34 600 123 456", group: "Familia", status: "confirmed", dietary: "Normal" },
   { id: 2, name: "José González", email: "jose@email.com", phone: "+34 600 234 567", group: "Familia", status: "confirmed", dietary: "Vegetariano" },
   { id: 3, name: "Ana Martínez", email: "ana@email.com", phone: "+34 600 345 678", group: "Familia", status: "pending", dietary: "Sin gluten" },
@@ -49,32 +48,22 @@ const ClientGuests = () => {
   const [filterStatus, setFilterStatus] = useState("all");
   const [isAddGuestOpen, setIsAddGuestOpen] = useState(false);
 
-  const getStatusBadge = (status: string) => {
-    const statusConfig = {
-      confirmed: { label: "Confirmado", variant: "default" as const, className: "bg-green-100 text-green-800" },
-      pending: { label: "Pendiente", variant: "secondary" as const, className: "bg-yellow-100 text-yellow-800" },
-      rejected: { label: "Rechazado", variant: "destructive" as const, className: "bg-red-100 text-red-800" },
-    };
-    const config = statusConfig[status as keyof typeof statusConfig];
-    return <Badge className={config.className}>{config.label}</Badge>;
-  };
-
-  const getGroupBadge = (group: string) => {
-    const groupColors = {
-      Familia: "bg-blue-100 text-blue-800",
-      Amigos: "bg-purple-100 text-purple-800",
-      Trabajo: "bg-orange-100 text-orange-800",
-      Pareja: "bg-pink-100 text-pink-800",
-    };
-    return <Badge className={groupColors[group as keyof typeof groupColors] || "bg-gray-100 text-gray-800"}>{group}</Badge>;
-  };
-
   const filteredGuests = mockGuests.filter(guest => {
     const matchesSearch = guest.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesGroup = filterGroup === "all" || guest.group === filterGroup;
     const matchesStatus = filterStatus === "all" || guest.status === filterStatus;
     return matchesSearch && matchesGroup && matchesStatus;
   });
+
+  const handleEdit = (guest: Guest) => {
+    console.log("Edit guest:", guest);
+    alert(`Editando invitado: ${guest.name}`);
+  };
+
+  const handleDelete = (guest: Guest) => {
+    console.log("Delete guest:", guest);
+    alert(`Eliminando invitado: ${guest.name}`);
+  };
 
   return (
     <SidebarProvider>
@@ -215,59 +204,13 @@ const ClientGuests = () => {
                   </Dialog>
                 </div>
 
-                {/* Guests Table */}
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="text-left py-3 px-4 font-medium">Nombre</th>
-                        <th className="text-left py-3 px-4 font-medium">Contacto</th>
-                        <th className="text-left py-3 px-4 font-medium">Grupo</th>
-                        <th className="text-left py-3 px-4 font-medium">Estado</th>
-                        <th className="text-left py-3 px-4 font-medium">Menú</th>
-                        <th className="text-left py-3 px-4 font-medium">Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredGuests.map((guest) => (
-                        <tr key={guest.id} className="border-b hover:bg-secondary/50">
-                          <td className="py-3 px-4 font-medium">{guest.name}</td>
-                          <td className="py-3 px-4">
-                            <div className="space-y-1">
-                              <div className="flex items-center space-x-2">
-                                <Mail className="h-4 w-4 text-muted-foreground" />
-                                <a href={`mailto:${guest.email}`} className="text-sm hover:underline">
-                                  {guest.email}
-                                </a>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <Phone className="h-4 w-4 text-muted-foreground" />
-                                <a href={`tel:${guest.phone}`} className="text-sm hover:underline">
-                                  {guest.phone}
-                                </a>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="py-3 px-4">{getGroupBadge(guest.group)}</td>
-                          <td className="py-3 px-4">{getStatusBadge(guest.status)}</td>
-                          <td className="py-3 px-4">
-                            <span className="text-sm">{guest.dietary}</span>
-                          </td>
-                          <td className="py-3 px-4">
-                            <div className="flex space-x-2">
-                              <Button variant="ghost" size="sm">
-                                <Edit className="h-4 w-4" />
-                              </Button>
-                              <Button variant="ghost" size="sm">
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                {/* Guests Table - Updated to use GuestTable component */}
+                <GuestTable
+                  guests={filteredGuests}
+                  showActions={true}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
               </CardContent>
             </Card>
           </div>

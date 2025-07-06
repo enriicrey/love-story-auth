@@ -1,10 +1,10 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
 import { FloatingActionButton } from "@/components/ui/floating-action-button";
+import { KPICard } from "@/components/ui/kpi-card";
 import { 
   Heart, 
   Users, 
@@ -57,79 +57,46 @@ const AdminDashboard = () => {
           </p>
         </div>
 
-        {/* KPI Cards with enhanced styling */}
+        {/* KPI Cards - Updated to use KPICard component */}
         <div className="responsive-grid mb-8">
-          <Card className="hover-lift animate-bounce-in">
-            <CardHeader className="pb-3">
-              <div className="flex items-center space-x-2">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <Users className="h-5 w-5 text-primary" />
-                </div>
-                <CardTitle className="text-sm font-medium">Parejas registradas</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-primary mb-1">1,247</div>
-              <div className="flex items-center gap-2">
-                <Badge variant="success" size="sm">+23</Badge>
-                <span className="text-xs text-muted-foreground">esta semana</span>
-              </div>
-            </CardContent>
-          </Card>
+          <KPICard
+            title="Parejas registradas"
+            value="1,247"
+            subtitle="+23 esta semana"
+            color="primary"
+            icon={Users}
+            className="hover-lift animate-bounce-in"
+          />
 
-          <Card className="hover-lift animate-bounce-in" style={{animationDelay: '0.1s'}}>
-            <CardHeader className="pb-3">
-              <div className="flex items-center space-x-2">
-                <div className="p-2 bg-info/10 rounded-lg">
-                  <Briefcase className="h-5 w-5 text-blue-500" />
-                </div>
-                <CardTitle className="text-sm font-medium">Proveedores activos</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-blue-500 mb-1">542</div>
-              <div className="flex items-center gap-2">
-                <Badge variant="info" size="sm">+8</Badge>
-                <span className="text-xs text-muted-foreground">esta semana</span>
-              </div>
-            </CardContent>
-          </Card>
+          <KPICard
+            title="Proveedores activos"
+            value="542"
+            subtitle="+8 esta semana"
+            color="blue"
+            icon={Briefcase}
+            className="hover-lift animate-bounce-in"
+            style={{animationDelay: '0.1s'}}
+          />
 
-          <Card className="hover-lift animate-bounce-in" style={{animationDelay: '0.2s'}}>
-            <CardHeader className="pb-3">
-              <div className="flex items-center space-x-2">
-                <div className="p-2 bg-green-500/10 rounded-lg">
-                  <TrendingUp className="h-5 w-5 text-green-500" />
-                </div>
-                <CardTitle className="text-sm font-medium">Conexiones exitosas</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-green-500 mb-1">89%</div>
-              <div className="flex items-center gap-2">
-                <Badge variant="success" size="sm">+2%</Badge>
-                <span className="text-xs text-muted-foreground">este mes</span>
-              </div>
-            </CardContent>
-          </Card>
+          <KPICard
+            title="Conexiones exitosas"
+            value="89%"
+            subtitle="+2% este mes"
+            color="green"
+            icon={TrendingUp}
+            className="hover-lift animate-bounce-in"
+            style={{animationDelay: '0.2s'}}
+          />
 
-          <Card className="hover-lift animate-bounce-in" style={{animationDelay: '0.3s'}}>
-            <CardHeader className="pb-3">
-              <div className="flex items-center space-x-2">
-                <div className="p-2 bg-yellow-500/10 rounded-lg">
-                  <Euro className="h-5 w-5 text-yellow-600" />
-                </div>
-                <CardTitle className="text-sm font-medium">Ingresos totales</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-yellow-600 mb-1">€45,230</div>
-              <div className="flex items-center gap-2">
-                <Badge variant="warning" size="sm">+18%</Badge>
-                <span className="text-xs text-muted-foreground">este mes</span>
-              </div>
-            </CardContent>
-          </Card>
+          <KPICard
+            title="Ingresos totales"
+            value="€45,230"
+            subtitle="+18% este mes"
+            color="orange"
+            icon={Euro}
+            className="hover-lift animate-bounce-in"
+            style={{animationDelay: '0.3s'}}
+          />
         </div>
 
         {/* Main content area */}

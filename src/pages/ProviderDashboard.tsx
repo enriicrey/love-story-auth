@@ -1,10 +1,10 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
+import { KPICard } from "@/components/ui/kpi-card";
 import { Heart, Calendar, Euro, Users, TrendingUp, Star, MessageCircle, Bell, LogOut, BarChart3 } from "lucide-react";
 
 const ProviderDashboard = () => {
@@ -72,57 +72,37 @@ const ProviderDashboard = () => {
           <div className="p-6">
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <Card className="shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center space-x-2">
-                    <Euro className="h-5 w-5 text-primary" />
-                    <CardTitle className="text-sm">Ingresos mes</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-primary">€8,500</div>
-                  <div className="text-xs text-green-600">+15% vs mes anterior</div>
-                </CardContent>
-              </Card>
+              <KPICard
+                title="Ingresos mes"
+                value="€8,500"
+                subtitle="+15% vs mes anterior"
+                color="primary"
+                icon={Euro}
+              />
 
-              <Card className="shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center space-x-2">
-                    <Users className="h-5 w-5 text-primary" />
-                    <CardTitle className="text-sm">Clientes activos</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-primary">12</div>
-                  <div className="text-xs text-muted-foreground">bodas programadas</div>
-                </CardContent>
-              </Card>
+              <KPICard
+                title="Clientes activos"
+                value={12}
+                subtitle="bodas programadas"
+                color="blue"
+                icon={Users}
+              />
 
-              <Card className="shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center space-x-2">
-                    <Star className="h-5 w-5 text-primary" />
-                    <CardTitle className="text-sm">Valoración</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-primary">4.8</div>
-                  <div className="text-xs text-muted-foreground">⭐ (47 reseñas)</div>
-                </CardContent>
-              </Card>
+              <KPICard
+                title="Valoración"
+                value="4.8"
+                subtitle="⭐ (47 reseñas)"
+                color="orange"
+                icon={Star}
+              />
 
-              <Card className="shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center space-x-2">
-                    <Calendar className="h-5 w-5 text-primary" />
-                    <CardTitle className="text-sm">Próximas citas</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-primary">3</div>
-                  <div className="text-xs text-muted-foreground">reuniones esta semana</div>
-                </CardContent>
-              </Card>
+              <KPICard
+                title="Próximas citas"
+                value={3}
+                subtitle="reuniones esta semana"
+                color="green"
+                icon={Calendar}
+              />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">

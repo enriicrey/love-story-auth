@@ -1,7 +1,7 @@
 
 import { Link } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
-import { KPICard } from "@/components/ui/kpi-card";
+import { KPICard } from "@/shared/components/kpi-card";
 import { Calendar, Euro, CheckCircle, Users } from "lucide-react";
 
 export const KPICards = () => {

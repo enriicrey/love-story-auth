@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, Search, Users } from "lucide-react";
-import { GuestTable, Guest } from "@/components/ui/guest-table";
+import { GuestTable, Guest } from "@/shared/components/guest-table";
 import {
   Dialog,
   DialogContent,

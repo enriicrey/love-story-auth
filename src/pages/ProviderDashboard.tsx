@@ -1,10 +1,11 @@
+
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
-import { KPICard } from "@/components/ui/kpi-card";
+import { KPICard } from "@/shared/components/kpi-card";
 import { Heart, Calendar, Euro, Users, TrendingUp, Star, MessageCircle, Bell, LogOut, BarChart3 } from "lucide-react";
 
 const ProviderDashboard = () => {

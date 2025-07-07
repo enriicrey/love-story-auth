@@ -26,7 +26,7 @@ export const RecentNotifications = () => {
                 <div className="font-medium">{notification.message}</div>
                 <div className="text-sm text-muted-foreground">{notification.time}</div>
               </div>
-              <Badge variant="outline">
+              <Badge>
                 {notification.type === "confirmation" ? "Confirmación" : 
                  notification.type === "payment" ? "Pago" : "Propuesta"}
               </Badge>

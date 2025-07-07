@@ -1,8 +1,10 @@
+
 import { useState } from "react";
 import { DashboardLayout } from "@/shared/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { Badge } from "@/shared/ui/badge";
+import { KPICard } from "@/shared/components/kpi-card";
 import { Calendar, Euro, Star, Users, Plus, MessageSquare, FileText } from "lucide-react";
 
 interface Booking {
@@ -68,7 +70,7 @@ const ProviderDashboard = () => {
           title="Citas Pendientes"
           value="12"
           subtitle="próximas"
-          color="warning"
+          color="orange"
           icon={Calendar}
         />
 
@@ -76,7 +78,7 @@ const ProviderDashboard = () => {
           title="Satisfacción"
           value="4.8"
           subtitle="de 5.0 estrellas"
-          color="success"
+          color="green"
           icon={Star}
           progress={96}
         />

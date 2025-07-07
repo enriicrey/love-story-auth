@@ -1,7 +1,15 @@
+
 import * as React from "react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuItem } from "@/shared/ui/sidebar";
+import { 
+  Sidebar, 
+  SidebarContent, 
+  SidebarFooter, 
+  SidebarHeader, 
+  SidebarMenu, 
+  SidebarMenuItem 
+} from "@/components/ui/sidebar";
 import { Button } from "@/shared/ui/button";
 import { Avatar, AvatarFallback } from "@/shared/ui/avatar";
 import { 

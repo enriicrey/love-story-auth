@@ -3,7 +3,7 @@ import { useState } from "react";
 import { DashboardLayout } from "@/shared/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/shared/ui/badge";
 import { KPICard } from "@/shared/components/kpi-card";
 import { Calendar, Euro, Star, Users, Plus, MessageSquare, FileText } from "lucide-react";
 
@@ -86,25 +86,25 @@ const ProviderDashboard = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Bookings */}
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-2 shadow-lg">
           <CardHeader>
             <CardTitle className="text-xl">Reservas Recientes</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {recentBookings.map((booking) => (
-                <div key={booking.id} className="flex items-center justify-between p-4 bg-secondary/20 rounded-lg hover:bg-secondary/30 transition-colors">
+                <div key={booking.id} className="flex items-center justify-between p-4 bg-secondary rounded-lg hover:bg-secondary/80 transition-colors">
                   <div>
                     <div className="font-medium">{booking.client}</div>
                     <div className="text-sm text-muted-foreground">{booking.service}</div>
                     <div className="text-sm text-muted-foreground">{booking.date}</div>
                   </div>
                   <div className="flex items-center space-x-3">
-                    <Badge variant={booking.status === "confirmed" ? "default" : booking.status === "pending" ? "secondary" : "outline"}>
+                    <Badge>
                       {booking.status === "confirmed" ? "Confirmado" : 
                        booking.status === "pending" ? "Pendiente" : "Completado"}
                     </Badge>
-                    <div className="font-semibold text-primary">{booking.amount}</div>
+                    <div className="font-semibold">{booking.amount}</div>
                   </div>
                 </div>
               ))}
@@ -113,7 +113,7 @@ const ProviderDashboard = () => {
         </Card>
 
         {/* Quick Actions */}
-        <Card>
+        <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="text-xl">Acciones Rápidas</CardTitle>
           </CardHeader>

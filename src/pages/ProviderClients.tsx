@@ -4,12 +4,12 @@ import { Link } from "react-router-dom";
 import { AppSidebar } from "@/components/AppSidebar";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
-import { Button } from "@/shared/ui/button";
-import { Input } from "@/shared/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/shared/ui/dialog";
-import { Badge } from "@/shared/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
 import { Search, Plus, MessageCircle, Eye, Edit, Heart, MapPin, Calendar } from "lucide-react";
 
 const mockClients = [
@@ -150,48 +150,46 @@ const ProviderClients = () => {
               </div>
 
               {/* Filters */}
-              <Card className="p-4">
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                    <Input
-                      placeholder="Buscar por nombre..."
-                      className="pl-10"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                  </div>
-                  
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="w-full sm:w-48">
-                      <SelectValue placeholder="Estado" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Todos los estados</SelectItem>
-                      <SelectItem value="confirmed">Confirmados</SelectItem>
-                      <SelectItem value="quotation">Cotizaciones</SelectItem>
-                      <SelectItem value="completed">Completados</SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  <Select value={dateFilter} onValueChange={setDateFilter}>
-                    <SelectTrigger className="w-full sm:w-48">
-                      <SelectValue placeholder="Fecha boda" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Todas las fechas</SelectItem>
-                      <SelectItem value="3months">Próximos 3 meses</SelectItem>
-                      <SelectItem value="6months">Próximos 6 meses</SelectItem>
-                      <SelectItem value="more">Más de 6 meses</SelectItem>
-                    </SelectContent>
-                  </Select>
+              <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-lg border">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                  <Input
+                    placeholder="Buscar por nombre..."
+                    className="pl-10"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
                 </div>
-              </Card>
+                
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="w-full sm:w-48">
+                    <SelectValue placeholder="Estado" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos los estados</SelectItem>
+                    <SelectItem value="confirmed">Confirmados</SelectItem>
+                    <SelectItem value="quotation">Cotizaciones</SelectItem>
+                    <SelectItem value="completed">Completados</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Select value={dateFilter} onValueChange={setDateFilter}>
+                  <SelectTrigger className="w-full sm:w-48">
+                    <SelectValue placeholder="Fecha boda" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todas las fechas</SelectItem>
+                    <SelectItem value="3months">Próximos 3 meses</SelectItem>
+                    <SelectItem value="6months">Próximos 6 meses</SelectItem>
+                    <SelectItem value="more">Más de 6 meses</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
               {/* Clients Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredClients.map((client) => (
-                  <Card key={client.id} className="hover:shadow-xl transition-shadow">
+                  <Card key={client.id} className="shadow-lg hover:shadow-xl transition-shadow">
                     <CardHeader className="pb-3">
                       <div className="flex justify-between items-start">
                         <div>

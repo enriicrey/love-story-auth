@@ -3,7 +3,7 @@ import { useState } from "react";
 import { DashboardLayout } from "@/shared/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
-import { Badge } from "@/shared/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { KPICard } from "@/shared/components/kpi-card";
 import { Calendar, Euro, Star, Users, Plus, MessageSquare, FileText } from "lucide-react";
 

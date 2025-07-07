@@ -1,18 +1,18 @@
 
 import * as React from "react";
-import { Toaster as RadixToaster } from "@/components/ui/toast";
+import { Toast } from "@/components/ui/toast";
 
-export type ToasterProps = React.ComponentPropsWithoutRef<typeof RadixToaster>;
+export type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>;
 
 /**
- * Toaster component for displaying toast notifications.
- * This is a re-export of the Toaster component from the UI library.
+ * Toast component for displaying toast notifications.
+ * This is a re-export of the Toast component from the UI library.
  */
-export const Toaster = React.forwardRef<
-  React.ElementRef<typeof RadixToaster>,
-  ToasterProps
+export const ToastComponent = React.forwardRef<
+  React.ElementRef<typeof Toast>,
+  ToastProps
 >((props, ref) => {
-  return <RadixToaster ref={ref} {...props} />;
+  return <Toast ref={ref} {...props} />;
 });
 
-Toaster.displayName = "Toaster";
+ToastComponent.displayName = "Toast";

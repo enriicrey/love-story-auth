@@ -2,14 +2,6 @@
 import * as React from "react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { 
-  Sidebar, 
-  SidebarContent, 
-  SidebarFooter, 
-  SidebarHeader, 
-  SidebarMenu, 
-  SidebarMenuItem 
-} from "@/components/ui/sidebar";
 import { Button } from "@/shared/ui/button";
 import { Avatar, AvatarFallback } from "@/shared/ui/avatar";
 import { 
@@ -133,7 +125,6 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ userType }) => {
             icon: LayoutDashboard,
             label: "Dashboard",
           },
-          // Add more admin routes here
         ];
       default:
         return [];
@@ -141,44 +132,55 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ userType }) => {
   }, [userType]);
 
   return (
-    <Sidebar className={cn(isSidebarOpen ? "w-64" : "w-16", "group/sidebar transition-all duration-300")}>
-      <SidebarHeader>
-        <Link to="/" className="flex items-center justify-center space-x-2">
-          <Avatar className="h-8 w-8">
-            <AvatarFallback>WP</AvatarFallback>
-          </Avatar>
-          <span className={cn("font-bold", isSidebarOpen ? "block" : "hidden")}>
-            Wedding Plan
-          </span>
-        </Link>
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarMenu>
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <SidebarMenuItem
-                key={item.href}
-                isActive={location.pathname === item.href}
-                href={item.href}
-              >
-                <Icon className="h-4 w-4" />
-                <span className={cn("text-sm", isSidebarOpen ? "block" : "hidden")}>
-                  {item.label}
-                </span>
-              </SidebarMenuItem>
-            );
-          })}
-        </SidebarMenu>
-      </SidebarContent>
-      <SidebarFooter>
-        <Button variant="ghost" className="w-full justify-start">
-          <Settings className="h-4 w-4 mr-2" />
-          <span className={cn("text-sm", isSidebarOpen ? "block" : "hidden")}>
-            Configuración
-          </span>
-        </Button>
-      </SidebarFooter>
-    </Sidebar>
+    <div className={cn(isSidebarOpen ? "w-64" : "w-16", "group/sidebar transition-all duration-300 bg-background border-r")}>
+      <div className="flex flex-col h-full">
+        <div className="p-4">
+          <Link to="/" className="flex items-center justify-center space-x-2">
+            <Avatar className="h-8 w-8">
+              <AvatarFallback>WP</AvatarFallback>
+            </Avatar>
+            <span className={cn("font-bold", isSidebarOpen ? "block" : "hidden")}>
+              Wedding Plan
+            </span>
+          </Link>
+        </div>
+        
+        <div className="flex-1 px-4">
+          <nav className="space-y-2">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = location.pathname === item.href;
+              
+              return (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  className={cn(
+                    "flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors",
+                    isActive 
+                      ? "bg-primary text-primary-foreground font-medium" 
+                      : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  <Icon className="h-4 w-4" />
+                  <span className={cn("text-sm", isSidebarOpen ? "block" : "hidden")}>
+                    {item.label}
+                  </span>
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+        
+        <div className="p-4">
+          <Button variant="ghost" className="w-full justify-start">
+            <Settings className="h-4 w-4 mr-2" />
+            <span className={cn("text-sm", isSidebarOpen ? "block" : "hidden")}>
+              Configuración
+            </span>
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 };

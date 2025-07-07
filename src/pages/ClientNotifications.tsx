@@ -1,19 +1,17 @@
 
 import { useState } from "react";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/AppSidebar";
-import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Bell, CheckCircle, Eye, Filter, Trash2, Archive, Camera, CreditCard, Calendar, Settings } from "lucide-react";
+import { DashboardLayout } from "@/shared/layout/DashboardLayout";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
+import { Button } from "@/shared/ui/button";
+import { Badge } from "@/shared/ui/badge";
+import { Bell, CheckCircle, Eye, Trash2, Archive, Camera, CreditCard, Calendar, Settings } from "lucide-react";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/shared/ui/select";
 
 const mockNotifications = [
   {
@@ -87,7 +85,6 @@ const mockNotifications = [
 const ClientNotifications = () => {
   const [notifications, setNotifications] = useState(mockNotifications);
   const [filterType, setFilterType] = useState("all");
-  const [showArchive, setShowArchive] = useState(false);
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
@@ -126,130 +123,120 @@ const ClientNotifications = () => {
   });
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-gradient-to-br from-background to-secondary/30">
-        <AppSidebar userType="client" />
-        
-        <main className="flex-1">
-          <DashboardHeader />
+    <DashboardLayout userType="client" title="Notificaciones" subtitle="Gestiona tus alertas y actualizaciones">
+      <Card className="shadow-lg">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <CardTitle className="text-2xl flex items-center space-x-2">
+                <Bell className="h-6 w-6" />
+                <span>Notificaciones</span>
+              </CardTitle>
+              {unreadCount > 0 && (
+                <Badge className="bg-red-500 text-white">
+                  {unreadCount} sin leer
+                </Badge>
+              )}
+            </div>
 
-          <div className="p-6">
-            <Card className="shadow-lg">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <CardTitle className="text-2xl flex items-center space-x-2">
-                      <Bell className="h-6 w-6" />
-                      <span>Notificaciones</span>
-                    </CardTitle>
-                    {unreadCount > 0 && (
-                      <Badge className="bg-red-500 text-white">
-                        {unreadCount} sin leer
-                      </Badge>
-                    )}
-                  </div>
+            <div className="flex items-center space-x-2">
+              <Select value={filterType} onValueChange={setFilterType}>
+                <SelectTrigger className="w-48">
+                  <SelectValue placeholder="Filtrar por tipo" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todas</SelectItem>
+                  <SelectItem value="unread">Sin leer</SelectItem>
+                  <SelectItem value="provider">Proveedores</SelectItem>
+                  <SelectItem value="payment">Pagos</SelectItem>
+                  <SelectItem value="task">Tareas</SelectItem>
+                  <SelectItem value="system">Sistema</SelectItem>
+                </SelectContent>
+              </Select>
 
-                  <div className="flex items-center space-x-2">
-                    <Select value={filterType} onValueChange={setFilterType}>
-                      <SelectTrigger className="w-48">
-                        <SelectValue placeholder="Filtrar por tipo" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">Todas</SelectItem>
-                        <SelectItem value="unread">Sin leer</SelectItem>
-                        <SelectItem value="provider">Proveedores</SelectItem>
-                        <SelectItem value="payment">Pagos</SelectItem>
-                        <SelectItem value="task">Tareas</SelectItem>
-                        <SelectItem value="system">Sistema</SelectItem>
-                      </SelectContent>
-                    </Select>
+              <Button variant="outline" onClick={markAllAsRead} disabled={unreadCount === 0}>
+                <CheckCircle className="h-4 w-4 mr-2" />
+                Marcar todas como leídas
+              </Button>
 
-                    <Button variant="outline" onClick={markAllAsRead} disabled={unreadCount === 0}>
-                      <CheckCircle className="h-4 w-4 mr-2" />
-                      Marcar todas como leídas
-                    </Button>
-
-                    <Button variant="outline" onClick={() => setShowArchive(!showArchive)}>
-                      <Archive className="h-4 w-4 mr-2" />
-                      {showArchive ? "Ocultar archivo" : "Ver archivo"}
-                    </Button>
-                  </div>
-                </div>
-              </CardHeader>
-
-              <CardContent>
-                <div className="space-y-4">
-                  {filteredNotifications.length === 0 ? (
-                    <div className="text-center py-8 text-muted-foreground">
-                      <Bell className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                      <p>No hay notificaciones que mostrar</p>
-                    </div>
-                  ) : (
-                    filteredNotifications.map((notification) => (
-                      <div
-                        key={notification.id}
-                        className={`p-4 rounded-lg border transition-colors ${
-                          !notification.read
-                            ? 'bg-blue-50 border-blue-200'
-                            : 'bg-white border-gray-200 opacity-75'
-                        }`}
-                      >
-                        <div className="flex items-start justify-between">
-                          <div className="flex items-start space-x-4 flex-1">
-                            <div className={`p-2 rounded-full ${notification.bgColor}`}>
-                              <notification.icon className={`h-5 w-5 ${notification.color}`} />
-                            </div>
-                            
-                            <div className="flex-1">
-                              <div className="flex items-center space-x-2 mb-1">
-                                <h3 className={`font-medium ${!notification.read ? 'text-foreground' : 'text-muted-foreground'}`}>
-                                  {notification.title}
-                                </h3>
-                                <Badge variant="outline" className="text-xs">
-                                  {getTypeLabel(notification.type)}
-                                </Badge>
-                                {!notification.read && (
-                                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                )}
-                              </div>
-                              <p className={`text-sm mb-2 ${!notification.read ? 'text-foreground' : 'text-muted-foreground'}`}>
-                                {notification.message}
-                              </p>
-                              <p className="text-xs text-muted-foreground">
-                                {notification.time}
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className="flex items-center space-x-2 ml-4">
-                            {!notification.read && (
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => markAsRead(notification.id)}
-                              >
-                                <Eye className="h-4 w-4" />
-                              </Button>
-                            )}
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => deleteNotification(notification.id)}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+              <Button variant="outline">
+                <Archive className="h-4 w-4 mr-2" />
+                Ver archivo
+              </Button>
+            </div>
           </div>
-        </main>
-      </div>
-    </SidebarProvider>
+        </CardHeader>
+
+        <CardContent>
+          <div className="space-y-4">
+            {filteredNotifications.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">
+                <Bell className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                <p>No hay notificaciones que mostrar</p>
+              </div>
+            ) : (
+              filteredNotifications.map((notification) => (
+                <div
+                  key={notification.id}
+                  className={`p-4 rounded-lg border transition-colors ${
+                    !notification.read
+                      ? 'bg-blue-50 border-blue-200'
+                      : 'bg-white border-gray-200 opacity-75'
+                  }`}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start space-x-4 flex-1">
+                      <div className={`p-2 rounded-full ${notification.bgColor}`}>
+                        <notification.icon className={`h-5 w-5 ${notification.color}`} />
+                      </div>
+                      
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-1">
+                          <h3 className={`font-medium ${!notification.read ? 'text-foreground' : 'text-muted-foreground'}`}>
+                            {notification.title}
+                          </h3>
+                          <Badge variant="outline" className="text-xs">
+                            {getTypeLabel(notification.type)}
+                          </Badge>
+                          {!notification.read && (
+                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                          )}
+                        </div>
+                        <p className={`text-sm mb-2 ${!notification.read ? 'text-foreground' : 'text-muted-foreground'}`}>
+                          {notification.message}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {notification.time}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2 ml-4">
+                      {!notification.read && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => markAsRead(notification.id)}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                      )}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => deleteNotification(notification.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </DashboardLayout>
   );
 };
 

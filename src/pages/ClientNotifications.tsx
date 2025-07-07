@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 import { DashboardLayout } from "@/shared/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
-import { Badge } from "@/shared/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { Bell, CheckCircle, Eye, Trash2, Archive, Camera, CreditCard, Calendar, Settings } from "lucide-react";
 import {
   Select,

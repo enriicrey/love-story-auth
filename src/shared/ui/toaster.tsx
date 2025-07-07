@@ -10,7 +10,7 @@ export const Toaster = React.forwardRef<
   React.ElementRef<typeof RadixToaster>,
   React.ComponentPropsWithoutRef<typeof RadixToaster>
 >((props, ref) => {
-  return <RadixToaster {...props} />;
+  return <RadixToaster ref={ref} {...props} />;
 });
 
 Toaster.displayName = "Toaster";

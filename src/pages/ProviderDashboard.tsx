@@ -1,105 +1,139 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { DashboardLayout } from "@/shared/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { Badge } from "@/shared/ui/badge";
-import { KPICard } from "@/shared/components/kpi-card";
-import { Users, Euro, Calendar, Star, CheckCircle, Clock, MessageSquare, TrendingUp } from "lucide-react";
+import { Calendar, Euro, Star, Users, Plus, MessageSquare, FileText } from "lucide-react";
+
+interface Booking {
+  id: number;
+  client: string;
+  service: string;
+  date: string;
+  status: "confirmed" | "pending" | "completed";
+  amount: string;
+}
+
+const recentBookings: Booking[] = [
+  {
+    id: 1,
+    client: "María García",
+    service: "Sesión de fotos de compromiso",
+    date: "15 de Mayo, 2024",
+    status: "confirmed",
+    amount: "€1,200"
+  },
+  {
+    id: 2,
+    client: "José Fernández",
+    service: "Catering para 100 personas",
+    date: "22 de Junio, 2024",
+    status: "pending",
+    amount: "€4,500"
+  },
+  {
+    id: 3,
+    client: "Ana Ruiz",
+    service: "Decoración floral completa",
+    date: "10 de Julio, 2024",
+    status: "completed",
+    amount: "€2,800"
+  }
+];
 
 const ProviderDashboard = () => {
+  const [bookings, setBookings] = useState(recentBookings);
+
   return (
-    <DashboardLayout userType="provider" title="Panel de Proveedor">
+    <DashboardLayout userType="provider" title="Dashboard Proveedor" subtitle="Gestiona tu negocio y clientes">
+      {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <KPICard
-          title="Clientes"
-          value="45"
-          subtitle="Clientes activos"
+          title="Clientes Activos"
+          value="24"
+          subtitle="este mes"
           color="primary"
           icon={Users}
         />
+
         <KPICard
-          title="Ingresos Mensuales"
-          value="€3,500"
-          subtitle="Este mes"
+          title="Ingresos"
+          value="€8,500"
+          subtitle="este mes"
           color="green"
           icon={Euro}
         />
+
         <KPICard
-          title="Próximos Eventos"
-          value="7"
-          subtitle="Eventos este mes"
-          color="blue"
+          title="Citas Pendientes"
+          value="12"
+          subtitle="próximas"
+          color="warning"
           icon={Calendar}
         />
+
         <KPICard
-          title="Valoración Media"
+          title="Satisfacción"
           value="4.8"
-          subtitle="de 5 estrellas"
-          color="orange"
+          subtitle="de 5.0 estrellas"
+          color="success"
           icon={Star}
+          progress={96}
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Card className="hover-lift">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Recent Bookings */}
+        <Card className="lg:col-span-2 shadow-lg">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <CheckCircle className="h-5 w-5" />
-              Tareas Pendientes
-            </CardTitle>
+            <CardTitle className="text-xl">Reservas Recientes</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {[
-                { task: "Confirmar detalles del menú con cliente", time: "Hoy, 15:00" },
-                { task: "Enviar propuesta de decoración floral", time: "Mañana, 10:00" },
-                { task: "Preparar lista de canciones para el evento", time: "Viernes, 14:00" }
-              ].map((item, index) => (
-                <div key={index} className="flex justify-between items-center p-4 bg-secondary/50 rounded-xl hover:bg-secondary/70 transition-colors">
+              {recentBookings.map((booking) => (
+                <div key={booking.id} className="flex items-center justify-between p-4 bg-secondary rounded-lg hover:bg-secondary/80 transition-colors">
                   <div>
-                    <div className="font-medium">{item.task}</div>
-                    <div className="text-sm text-muted-foreground">{item.time}</div>
+                    <div className="font-medium">{booking.client}</div>
+                    <div className="text-sm text-muted-foreground">{booking.service}</div>
+                    <div className="text-sm text-muted-foreground">{booking.date}</div>
                   </div>
-                  <Badge variant="outline">Pendiente</Badge>
+                  <div className="flex items-center space-x-3">
+                    <Badge>
+                      {booking.status === "confirmed" ? "Confirmado" : 
+                       booking.status === "pending" ? "Pendiente" : "Completado"}
+                    </Badge>
+                    <div className="font-semibold">{booking.amount}</div>
+                  </div>
                 </div>
               ))}
             </div>
           </CardContent>
         </Card>
 
-        <Card className="hover-lift">
+        {/* Quick Actions */}
+        <Card className="shadow-lg">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Clock className="h-5 w-5" />
-              Actividad Reciente
-            </CardTitle>
+            <CardTitle className="text-xl">Acciones Rápidas</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {[
-                { activity: "Nuevo mensaje de cliente", detail: "Laura G.", time: "hace 1 hora", icon: MessageSquare },
-                { activity: "Pago recibido", detail: "Evento del 15 de Junio", time: "hace 3 horas", icon: TrendingUp },
-                { activity: "Evento confirmado", detail: "Boda de Ana y Juan", time: "Ayer", icon: Calendar }
-              ].map((item, index) => (
-                <div key={index} className="flex items-center space-x-3 p-4 bg-secondary/50 rounded-xl hover:bg-secondary/70 transition-colors">
-                  <item.icon className="h-5 w-5 text-blue-500" />
-                  <div className="flex-1 min-w-0">
-                    <div className="font-medium">{item.activity}</div>
-                    <div className="text-sm text-muted-foreground">{item.detail} - {item.time}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <CardContent className="space-y-4">
+            <Button className="w-full" size="lg">
+              <Plus className="h-4 w-4 mr-2" />
+              Nuevo Cliente
+            </Button>
+            <Button variant="outline" className="w-full" size="lg">
+              <Calendar className="h-4 w-4 mr-2" />
+              Programar Cita
+            </Button>
+            <Button variant="outline" className="w-full" size="lg">
+              <MessageSquare className="h-4 w-4 mr-2" />
+              Enviar Mensaje
+            </Button>
+            <Button variant="outline" className="w-full" size="lg">
+              <FileText className="h-4 w-4 mr-2" />
+              Crear Propuesta
+            </Button>
           </CardContent>
         </Card>
-      </div>
-
-      <div className="text-center mt-8">
-        <Button asChild>
-          <Link to="/provider/settings">
-            Gestionar Perfil
-          </Link>
-        </Button>
       </div>
     </DashboardLayout>
   );

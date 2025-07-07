@@ -1,8 +1,8 @@
 
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
-import CoupleForm from "@/components/CoupleForm";
-import ProviderForm from "@/components/ProviderForm";
+import { CoupleForm } from "@/features/auth/components/CoupleForm";
+import { ProviderForm } from "@/features/auth/components/ProviderForm";
 
 const Index = () => {
   return (

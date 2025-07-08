@@ -7,10 +7,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { Briefcase, Loader2 } from "lucide-react";
+import { Briefcase, Loader2, CheckCircle } from "lucide-react";
+import { useWebhooks } from "@/hooks/useWebhooks";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 const ProviderForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const { sendProviderRegistration } = useWebhooks();
+  const { trackFormSubmission, trackUserAction } = useAnalytics();
   const [formData, setFormData] = useState({
     nombreEmpresa: "",
     tipoServicio: "",
@@ -29,32 +34,36 @@ const ProviderForm = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://hook.eu2.make.com/proveedor-webhook", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+      // Track form submission attempt
+      trackUserAction('form_started', { form_type: 'provider_registration' });
+
+      // Send enhanced data to Make.com
+      await sendProviderRegistration({
+        ...formData,
+        form_type: 'provider_registration',
+        submission_time: new Date().toISOString(),
+        page_url: window.location.href,
+        referrer: document.referrer,
       });
 
-      if (response.ok) {
-        toast({
-          title: "¡Solicitud enviada!",
-          description: "Te notificaremos pronto sobre el estado de tu solicitud para unirte como proveedor.",
-          duration: 5000,
-        });
-        setFormData({
-          nombreEmpresa: "",
-          tipoServicio: "",
-          email: "",
-          telefono: "",
-          ciudad: "",
-          descripcion: ""
-        });
-      } else {
-        throw new Error("Error al enviar");
-      }
+      // Track successful submission
+      trackFormSubmission('provider_registration', true);
+      
+      setIsSuccess(true);
+      toast({
+        title: "¡Solicitud enviada!",
+        description: "Te notificaremos pronto sobre el estado de tu solicitud para unirte como proveedor.",
+        duration: 5000,
+      });
+
+      // Auto-redirect after 3 seconds
+      setTimeout(() => {
+        window.location.href = '/provider-dashboard';
+      }, 3000);
+
     } catch (error) {
+      trackFormSubmission('provider_registration', false);
+      console.error('Form submission error:', error);
       toast({
         title: "Error",
         description: "No pudimos procesar tu solicitud. Inténtalo de nuevo.",
@@ -64,6 +73,25 @@ const ProviderForm = () => {
       setIsLoading(false);
     }
   };
+
+  if (isSuccess) {
+    return (
+      <Card className="h-full shadow-lg">
+        <CardContent className="flex flex-col items-center justify-center h-full text-center p-8">
+          <div className="mb-6 p-4 bg-success/10 rounded-full">
+            <CheckCircle className="h-12 w-12 text-success" />
+          </div>
+          <h3 className="text-2xl font-bold mb-4">¡Solicitud Enviada!</h3>
+          <p className="text-muted-foreground mb-6">
+            Te notificaremos pronto sobre el estado de tu solicitud para unirte como proveedor.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Redirigiendo a tu dashboard...
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="h-full shadow-lg hover:shadow-xl transition-shadow duration-300">

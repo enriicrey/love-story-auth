@@ -14,7 +14,240 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      analytics_events: {
+        Row: {
+          created_at: string
+          event_data: Json | null
+          event_name: string
+          id: string
+          ip_address: unknown | null
+          session_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_data?: Json | null
+          event_name: string
+          id?: string
+          ip_address?: unknown | null
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_data?: Json | null
+          event_name?: string
+          id?: string
+          ip_address?: unknown | null
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          action_label: string | null
+          action_url: string | null
+          created_at: string
+          id: string
+          message: string
+          read_at: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          action_label?: string | null
+          action_url?: string | null
+          created_at?: string
+          id?: string
+          message: string
+          read_at?: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          action_label?: string | null
+          action_url?: string | null
+          created_at?: string
+          id?: string
+          message?: string
+          read_at?: string | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          budget_range: string | null
+          city: string | null
+          company_name: string | null
+          created_at: string
+          email: string
+          first_name: string | null
+          id: string
+          last_name: string | null
+          phone: string | null
+          service_type: string | null
+          updated_at: string
+          user_id: string
+          user_type: string
+          wedding_date: string | null
+        }
+        Insert: {
+          budget_range?: string | null
+          city?: string | null
+          company_name?: string | null
+          created_at?: string
+          email: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          phone?: string | null
+          service_type?: string | null
+          updated_at?: string
+          user_id: string
+          user_type: string
+          wedding_date?: string | null
+        }
+        Update: {
+          budget_range?: string | null
+          city?: string | null
+          company_name?: string | null
+          created_at?: string
+          email?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          phone?: string | null
+          service_type?: string | null
+          updated_at?: string
+          user_id?: string
+          user_type?: string
+          wedding_date?: string | null
+        }
+        Relationships: []
+      }
+      service_contracts: {
+        Row: {
+          client_id: string
+          contract_date: string | null
+          created_at: string
+          event_date: string | null
+          id: string
+          notes: string | null
+          provider_id: string
+          service_id: string
+          status: string
+          total_amount: number | null
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          contract_date?: string | null
+          created_at?: string
+          event_date?: string | null
+          id?: string
+          notes?: string | null
+          provider_id: string
+          service_id: string
+          status?: string
+          total_amount?: number | null
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          contract_date?: string | null
+          created_at?: string
+          event_date?: string | null
+          id?: string
+          notes?: string | null
+          provider_id?: string
+          service_id?: string
+          status?: string
+          total_amount?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          images: string[] | null
+          is_active: boolean | null
+          name: string
+          price: number | null
+          provider_id: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          images?: string[] | null
+          is_active?: boolean | null
+          name: string
+          price?: number | null
+          provider_id: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          images?: string[] | null
+          is_active?: boolean | null
+          name?: string
+          price?: number | null
+          provider_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      webhook_logs: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          payload: Json
+          response_body: string | null
+          response_status: number | null
+          user_id: string | null
+          webhook_url: string
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          payload: Json
+          response_body?: string | null
+          response_status?: number | null
+          user_id?: string | null
+          webhook_url: string
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          payload?: Json
+          response_body?: string | null
+          response_status?: number | null
+          user_id?: string | null
+          webhook_url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

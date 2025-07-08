@@ -64,32 +64,42 @@ const ClientSettings = () => {
           <DashboardHeader />
 
           <div className="p-6 max-w-4xl mx-auto">
-            <div className="mb-6">
-              <h1 className="text-3xl font-bold flex items-center space-x-2">
-                <Settings className="h-8 w-8" />
+            <div className="mb-8 animate-fade-in">
+              <h1 className="text-4xl font-bold flex items-center space-x-3 gradient-text">
+                <Settings className="h-8 w-8 animate-float" />
                 <span>Configuración</span>
               </h1>
-              <p className="text-muted-foreground">Gestiona tu cuenta y preferencias</p>
+              <p className="text-muted-foreground mt-2 text-lg">Gestiona tu cuenta y preferencias de manera sencilla</p>
             </div>
 
             <div className="space-y-6">
               {/* Personal Information */}
-              <Card className="shadow-lg">
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <User className="h-5 w-5" />
-                    <span>Información Personal</span>
+              <Card className="shadow-elegant hover:shadow-glow transition-all duration-500 animate-fade-in border-primary/20">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center space-x-3 text-xl">
+                    <div className="p-2 bg-primary/10 rounded-lg">
+                      <User className="h-6 w-6 text-primary" />
+                    </div>
+                    <span className="text-foreground">Información Personal</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 bg-gradient-to-br from-pink-400 to-rose-400 rounded-full flex items-center justify-center">
-                      <Camera className="h-8 w-8 text-white" />
+                  <div className="flex items-center space-x-6 p-4 bg-gradient-to-r from-primary/5 to-transparent rounded-lg">
+                    <div className="relative">
+                      <div className="w-24 h-24 primary-gradient rounded-full flex items-center justify-center shadow-glow animate-pulse-glow">
+                        <Camera className="h-8 w-8 text-white" />
+                      </div>
+                      <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-success rounded-full flex items-center justify-center shadow-md">
+                        <span className="text-xs text-white">✓</span>
+                      </div>
                     </div>
-                    <Button variant="outline">
-                      <Camera className="h-4 w-4 mr-2" />
-                      Cambiar Foto
-                    </Button>
+                    <div>
+                      <Button variant="premium" className="mb-2">
+                        <Camera className="h-4 w-4 mr-2" />
+                        Cambiar Foto
+                      </Button>
+                      <p className="text-sm text-muted-foreground">Recomendado: 400x400px, JPG o PNG</p>
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -120,10 +130,15 @@ const ClientSettings = () => {
                     />
                   </div>
 
-                  <Button>
-                    <Save className="h-4 w-4 mr-2" />
-                    Guardar Cambios
-                  </Button>
+                  <div className="flex space-x-3">
+                    <Button variant="premium" size="lg" className="flex-1">
+                      <Save className="h-4 w-4 mr-2" />
+                      Guardar Cambios
+                    </Button>
+                    <Button variant="outline" size="lg">
+                      Cancelar
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
 

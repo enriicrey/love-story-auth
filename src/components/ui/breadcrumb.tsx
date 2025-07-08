@@ -1,26 +1,15 @@
-
 import * as React from "react"
-import { ChevronRight, Home } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Slot } from "@radix-ui/react-slot"
+import { ChevronRight, MoreHorizontal } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
 const Breadcrumb = React.forwardRef<
   HTMLElement,
   React.ComponentPropsWithoutRef<"nav"> & {
-    separator?: React.ComponentType<any>
+    separator?: React.ReactNode
   }
->(({ className, separator: Separator = ChevronRight, ...props }, ref) => (
-  <nav ref={ref} aria-label="breadcrumb" {...props}>
-    <ol
-      className={cn(
-        "flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm:gap-2.5",
-        className
-      )}
-      {...props}
-    />
-  </nav>
-))
+>(({ ...props }, ref) => <nav ref={ref} aria-label="breadcrumb" {...props} />)
 Breadcrumb.displayName = "Breadcrumb"
 
 const BreadcrumbList = React.forwardRef<
@@ -51,20 +40,17 @@ const BreadcrumbItem = React.forwardRef<
 BreadcrumbItem.displayName = "BreadcrumbItem"
 
 const BreadcrumbLink = React.forwardRef<
-  React.ElementRef<typeof Link>,
-  React.ComponentPropsWithoutRef<typeof Link> & {
+  HTMLAnchorElement,
+  React.ComponentPropsWithoutRef<"a"> & {
     asChild?: boolean
   }
 >(({ asChild, className, ...props }, ref) => {
-  const Comp = asChild ? "span" : Link
+  const Comp = asChild ? Slot : "a"
 
   return (
     <Comp
       ref={ref}
-      className={cn(
-        "transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm",
-        className
-      )}
+      className={cn("transition-colors hover:text-foreground", className)}
       {...props}
     />
   )
@@ -112,11 +98,11 @@ const BreadcrumbEllipsis = ({
     className={cn("flex h-9 w-9 items-center justify-center", className)}
     {...props}
   >
+    <MoreHorizontal className="h-4 w-4" />
     <span className="sr-only">More</span>
-    <span className="h-4 w-4">...</span>
   </span>
 )
-BreadcrumbEllipsis.displayName = "BreadcrumbEllipsis"
+BreadcrumbEllipsis.displayName = "BreadcrumbElipssis"
 
 export {
   Breadcrumb,

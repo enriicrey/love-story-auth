@@ -1,22 +1,45 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { Heart, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { trackPageView, trackUserAction } = useAnalytics();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
-    role: ""
+    password: ""
   });
+
+  useEffect(() => {
+    trackPageView('login');
+    
+    // Check if user is already logged in
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('user_type')
+          .eq('user_id', session.user.id)
+          .single();
+        
+        if (profile) {
+          const route = profile.user_type === 'client' ? '/client/dashboard' : '/provider/dashboard';
+          navigate(route);
+        }
+      }
+    };
+    
+    checkAuth();
+  }, [navigate, trackPageView]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -26,30 +49,62 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate authentication
-    setTimeout(() => {
-      toast({
-        title: "¡Bienvenido!",
-        description: "Has iniciado sesión correctamente.",
-        duration: 3000,
+    try {
+      // Clean up any existing auth state
+      await supabase.auth.signOut();
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
       });
 
-      // Redirect based on role
-      switch (formData.role) {
-        case "cliente":
-          navigate("/client/dashboard");
-          break;
-        case "proveedor":
-          navigate("/provider/dashboard");
-          break;
-        case "admin":
-          navigate("/admin/dashboard");
-          break;
-        default:
-          navigate("/");
+      if (error) throw error;
+
+      if (data.user) {
+        // Get user profile to determine redirect
+        const { data: profile, error: profileError } = await supabase
+          .from('profiles')
+          .select('user_type, first_name')
+          .eq('user_id', data.user.id)
+          .single();
+
+        if (profileError) {
+          console.error('Error fetching profile:', profileError);
+          toast({
+            title: "Error",
+            description: "No se pudo obtener el perfil del usuario.",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        // Track login event
+        trackUserAction('login', { user_type: profile.user_type }, data.user.id);
+
+        toast({
+          title: "¡Bienvenido!",
+          description: `Hola ${profile.first_name || formData.email}. Has iniciado sesión correctamente.`,
+          duration: 3000,
+        });
+
+        // Redirect based on user type
+        const route = profile.user_type === 'client' ? '/client/dashboard' : '/provider/dashboard';
+        navigate(route);
       }
+    } catch (error: any) {
+      console.error('Login error:', error);
+      trackUserAction('login_failed', { error: error.message });
+      
+      toast({
+        title: "Error de inicio de sesión",
+        description: error.message === "Invalid login credentials" 
+          ? "Email o contraseña incorrectos" 
+          : "Error al iniciar sesión. Inténtalo de nuevo.",
+        variant: "destructive",
+      });
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -96,20 +151,6 @@ const Login = () => {
                   placeholder="Tu contraseña"
                   className="transition-all duration-200 focus:ring-2 focus:ring-primary"
                 />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="role">Tipo de usuario</Label>
-                <Select onValueChange={(value) => handleInputChange("role", value)} required>
-                  <SelectTrigger className="transition-all duration-200 focus:ring-2 focus:ring-primary">
-                    <SelectValue placeholder="Selecciona tu rol" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="cliente">Cliente</SelectItem>
-                    <SelectItem value="proveedor">Proveedor</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
-                  </SelectContent>
-                </Select>
               </div>
               
               <Button 

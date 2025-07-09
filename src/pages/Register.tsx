@@ -9,6 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { Heart, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -35,6 +37,8 @@ const Register = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const { trackPageView, trackUserAction, trackConversion } = useAnalytics();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -49,27 +53,91 @@ const Register = () => {
 
     setIsLoading(true);
 
-    // Simulate registration
-    setTimeout(() => {
-      toast({
-        title: "¡Registro exitoso!",
-        description: "Tu cuenta ha sido creada correctamente.",
-        duration: 3000,
+    try {
+      // Clean up any existing auth state
+      await supabase.auth.signOut();
+
+      // Sign up user
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/`
+        }
       });
 
-      // Redirect based on role
-      switch (selectedRole) {
-        case "cliente":
-          navigate("/client/dashboard");
-          break;
-        case "proveedor":
-          navigate("/provider/dashboard");
-          break;
-        default:
-          navigate("/login");
+      if (error) throw error;
+
+      if (data.user) {
+        // Create profile based on role
+        const profileData = {
+          user_id: data.user.id,
+          email: formData.email,
+          user_type: selectedRole === "cliente" ? "client" : "provider",
+          first_name: selectedRole === "cliente" ? formData.nombre : formData.nombreEmpresa,
+          last_name: selectedRole === "cliente" ? formData.apellidos : null,
+          phone: formData.telefono,
+          company_name: selectedRole === "proveedor" ? formData.nombreEmpresa : null,
+          service_type: selectedRole === "proveedor" ? formData.tipoServicio : null,
+          city: selectedRole === "proveedor" ? formData.ciudad : null,
+          wedding_date: selectedRole === "cliente" ? formData.fechaBoda : null,
+          budget_range: selectedRole === "cliente" ? formData.presupuesto : null,
+        };
+
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert(profileData);
+
+        if (profileError) {
+          console.error('Profile creation error:', profileError);
+          throw new Error('Error al crear perfil de usuario');
+        }
+
+        // Track registration and conversion
+        trackUserAction('registration', { user_type: profileData.user_type }, data.user.id);
+        trackConversion('registration', 1, data.user.id);
+
+        // If provider, create initial service entry
+        if (selectedRole === "proveedor" && formData.descripcion) {
+          const { error: serviceError } = await supabase
+            .from('services')
+            .insert({
+              provider_id: data.user.id,
+              name: `Servicios de ${formData.nombreEmpresa}`,
+              category: formData.tipoServicio,
+              description: formData.descripcion,
+              is_active: true
+            });
+
+          if (serviceError) {
+            console.error('Service creation error:', serviceError);
+          }
+        }
+
+        toast({
+          title: "¡Registro exitoso!",
+          description: "Tu cuenta ha sido creada correctamente.",
+          duration: 3000,
+        });
+
+        // Redirect based on role
+        const route = selectedRole === "cliente" ? "/client/dashboard" : "/provider/dashboard";
+        navigate(route);
       }
+    } catch (error: any) {
+      console.error('Registration error:', error);
+      trackUserAction('registration_failed', { error: error.message });
+      
+      toast({
+        title: "Error de registro",
+        description: error.message === "User already registered" 
+          ? "Ya existe una cuenta con este email" 
+          : "Error al crear la cuenta. Inténtalo de nuevo.",
+        variant: "destructive",
+      });
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   const renderRoleSpecificFields = () => {

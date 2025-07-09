@@ -1,16 +1,26 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { VendorFilters } from "@/components/vendors/VendorFilters";
 import { VendorGrid } from "@/components/vendors/VendorGrid";
+import { useAuth } from "@/components/AuthProvider";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 const Vendors = () => {
+  const { user } = useAuth();
+  const { trackPageView } = useAnalytics();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("todos");
   const [priceRange, setPriceRange] = useState([0, 5000]);
   const [selectedCity, setSelectedCity] = useState("todas");
+
+  useEffect(() => {
+    if (user) {
+      trackPageView('vendors', user.id);
+    }
+  }, [user, trackPageView]);
 
   return (
     <SidebarProvider>

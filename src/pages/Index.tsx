@@ -1,10 +1,36 @@
 
+import { useEffect } from "react";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import CoupleForm from "@/components/CoupleForm";
 import ProviderForm from "@/components/ProviderForm";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is already authenticated
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('user_type')
+          .eq('user_id', session.user.id)
+          .single();
+        
+        if (profile) {
+          const route = profile.user_type === 'client' ? '/client/dashboard' : '/provider/dashboard';
+          navigate(route);
+        }
+      }
+    };
+    
+    checkAuth();
+  }, [navigate]);
+
   return (
     <div className="min-h-screen gradient-bg">
       <Header />
